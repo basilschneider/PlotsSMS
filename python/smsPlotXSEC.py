@@ -17,7 +17,7 @@ class smsPlotXSEC(smsPlotABS):
         self.setStyleCOLZ()
 
     # define the plot canvas
-    def setStyleCOLZ(self):        
+    def setStyleCOLZ(self):
         # set z axis
         self.histo.GetZaxis().SetLabelFont(42)
         self.histo.GetZaxis().SetTitleFont(42)
@@ -35,10 +35,10 @@ class smsPlotXSEC(smsPlotABS):
         blue = array("d",[1.00, 1.00, 0.50, 0.40, 0.50])
         rt.TColor.CreateGradientColorTable(NRGBs, stops, red, green, blue, NCont)
         rt.gStyle.SetNumberContours(NCont)
-        
+
         self.c.cd()
         self.histo.Draw("colz")
-        
+
         rt.gPad.Update()
         palette = self.histo.GetListOfFunctions().FindObject("palette")
         palette.SetX1NDC(1.-0.18)
@@ -57,7 +57,7 @@ class smsPlotXSEC(smsPlotABS):
         textCOLZ.SetTextAngle(90)
         textCOLZ.Draw()
         self.c.textCOLZ = textCOLZ
-            
+
     def Draw(self):
         self.emptyHisto.GetXaxis().SetRangeUser(self.model.Xmin, self.model.Xmax)
         self.emptyHisto.GetYaxis().SetRangeUser(self.model.Ymin, self.model.Ymax)
@@ -71,4 +71,4 @@ class smsPlotXSEC(smsPlotABS):
         self.DrawText()
         self.DrawLegend()
         self.DrawPaletteLabel()
-        
+

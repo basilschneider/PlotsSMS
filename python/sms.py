@@ -10,6 +10,7 @@ class sms():
         if modelname.find("T1bbbb") != -1: self.T1bbbb()
         if modelname.find("T1qqqq") != -1: self.T1qqqq()
         if modelname.find("T5qqqqVV") != -1: self.T5qqqqVV()
+        if modelname.find("TChiWZ") != -1: self.TChiWZ()
 
 
     def T1tttt(self):
@@ -20,10 +21,10 @@ class sms():
         self.label= "pp #rightarrow #tilde{g} #tilde{g}, #tilde{g} #rightarrow t #bar{t} "+lsp_s;
         self.label2= "";
         # scan range to plot
-        self.Xmin = 600.
-        self.Xmax = 2200.
+        self.Xmin = 0.
+        self.Xmax = 350.
         self.Ymin = 0.
-        self.Ymax = 1900.
+        self.Ymax = 50.
         self.Zmin = 0.001
         self.Zmax = 2.
         # produce sparticle
@@ -162,6 +163,30 @@ class sms():
         self.sParticle = "m#kern[0.1]{_{#lower[-0.12]{#tilde{g}}}} [GeV]"
         # LSP
         self.LSP = "m#kern[0.1]{_{"+lsp_s+"}} [GeV]"
+        # turn off diagonal lines
+        self.diagOn = False
+        self.boxOn = False
+
+    def TChiWZ(self):
+        # model name
+        self.modelname = "T1tttt"
+        # decay chain
+        n1 = "#lower[-0.12]{#tilde{#chi}}#lower[0.2]{#scale[0.85]{^{0}}}#kern[-1.3]{#scale[0.85]{_{1}}}"
+        n2 = "#lower[-0.12]{#tilde{#chi}}#lower[0.2]{#scale[0.85]{^{0}}}#kern[-1.3]{#scale[0.85]{_{2}}}"
+        c1 = "#lower[-0.12]{#tilde{#chi}}#lower[0.2]{#scale[0.85]{^{#pm}}}#kern[-1.3]{#scale[0.85]{_{1}}}"
+        self.label= "pp #rightarrow "+n2+c1+", "+n2+" #rightarrow Z"+n1+", "+c1+" #rightarrow W"+n1
+        self.label2= "";
+        # scan range to plot
+        self.Xmin = 100.
+        self.Xmax = 375.
+        self.Ymin = 5.
+        self.Ymax = 50.
+        self.Zmin = 0.001
+        self.Zmax = 2.
+        # produce sparticle
+        self.sParticle = "m#kern[0.1]{_{"+n2+"}} = m#kern[0.1]{_{"+c1+"}} [GeV]"
+        # LSP
+        self.LSP = "m#kern[0.1]{_{"+n2+"}} - m#kern[0.1]{_{"+n1+"}} [GeV]"
         # turn off diagonal lines
         self.diagOn = False
         self.boxOn = False

@@ -35,56 +35,56 @@ class smsPlotBrazil(smsPlotABS):
         self.DrawLegend()
 
     def DrawLines(self):
-        # observed
-        self.OBS['nominal'].SetLineColor(1)
-        self.OBS['nominal'].SetLineStyle(1)
-        self.OBS['nominal'].SetLineWidth(4)
-        # observed + 1sigma
-        self.OBS['plus'].SetLineColor(1)
-        self.OBS['plus'].SetLineWidth(2)
-        self.OBS['plus'].SetLineStyle(1)
-        # observed - 1sigma
-        self.OBS['minus'].SetLineColor(1)
-        self.OBS['minus'].SetLineWidth(2)
-        self.OBS['minus'].SetLineStyle(1)
-        # expected
+        ## observed
+        #self.OBS['nominal'].SetLineColor(1)
+        #self.OBS['nominal'].SetLineStyle(1)
+        #self.OBS['nominal'].SetLineWidth(4)
+        ## observed + 1sigma
+        #self.OBS['plus'].SetLineColor(1)
+        #self.OBS['plus'].SetLineWidth(2)
+        #self.OBS['plus'].SetLineStyle(1)
+        ## observed - 1sigma
+        #self.OBS['minus'].SetLineColor(1)
+        #self.OBS['minus'].SetLineWidth(2)
+        #self.OBS['minus'].SetLineStyle(1)
+        ## expected
         self.EXP['nominal'].SetLineColor(1)
         self.EXP['nominal'].SetLineWidth(4)
         self.EXP['nominal'].SetLineStyle(2)        
-        # build one graph summing the + and - 1 sigma
-        nP = self.EXP['plus'].GetN()
-        nM = self.EXP['minus'].GetN()
-        sigmaBandX = []
-        sigmaBandY = []
-        for i in range(0,nP):
-            sigmaBandX.append(rt.Double(0.))
-            sigmaBandY.append(rt.Double(0.))
-            self.EXP['plus'].GetPoint(i, sigmaBandX[i], sigmaBandY[i])          
-        for i in range(0,nM):
-            sigmaBandX.append(rt.Double(0.))
-            sigmaBandY.append(rt.Double(0.))
-            #self.EXP['minus'].GetPoint(i, sigmaBandX[i+nP], sigmaBandY[i+nP])                      
-        for i in range(0,nM):            
-            self.EXP['minus'].GetPoint(i, sigmaBandX[nP+nM-i-1], sigmaBandY[nP+nM-i-1])          
-        sigmaBand = rt.TGraph(nP+nM, array('d', sigmaBandX), array('d', sigmaBandY))
-        #sigmaBand.SetFillStyle(3001)
-        sigmaBand.SetFillColor(color(self.EXP['colorArea']))
-        sigmaBand.Draw("FSAME")
-        self.c.sigmaBand = sigmaBand
-        
-        # expected + 1sigma
-        self.EXP['plus'].SetLineColor(1)
-        self.EXP['plus'].SetLineStyle(3)
-        # expected - 1sigma
-        self.EXP['minus'].SetLineColor(1)
-        self.EXP['minus'].SetLineStyle(3)
-        # DRAW LINES
-        self.OBS['nominal'].Draw("LSAME")
-        self.OBS['plus'].Draw("LSAME")
-        self.OBS['minus'].Draw("LSAME")        
+        ## build one graph summing the + and - 1 sigma
+        #nP = self.EXP['plus'].GetN()
+        #nM = self.EXP['minus'].GetN()
+        #sigmaBandX = []
+        #sigmaBandY = []
+        #for i in range(0,nP):
+        #    sigmaBandX.append(rt.Double(0.))
+        #    sigmaBandY.append(rt.Double(0.))
+        #    self.EXP['plus'].GetPoint(i, sigmaBandX[i], sigmaBandY[i])          
+        #for i in range(0,nM):
+        #    sigmaBandX.append(rt.Double(0.))
+        #    sigmaBandY.append(rt.Double(0.))
+        #    #self.EXP['minus'].GetPoint(i, sigmaBandX[i+nP], sigmaBandY[i+nP])                      
+        #for i in range(0,nM):            
+        #    self.EXP['minus'].GetPoint(i, sigmaBandX[nP+nM-i-1], sigmaBandY[nP+nM-i-1])          
+        #sigmaBand = rt.TGraph(nP+nM, array('d', sigmaBandX), array('d', sigmaBandY))
+        ##sigmaBand.SetFillStyle(3001)
+        #sigmaBand.SetFillColor(color(self.EXP['colorArea']))
+        #sigmaBand.Draw("FSAME")
+        #self.c.sigmaBand = sigmaBand
+        #
+        ## expected + 1sigma
+        #self.EXP['plus'].SetLineColor(1)
+        #self.EXP['plus'].SetLineStyle(3)
+        ## expected - 1sigma
+        #self.EXP['minus'].SetLineColor(1)
+        #self.EXP['minus'].SetLineStyle(3)
+        ## DRAW LINES
+        #self.OBS['nominal'].Draw("LSAME")
+        #self.OBS['plus'].Draw("LSAME")
+        #self.OBS['minus'].Draw("LSAME")        
         self.EXP['nominal'].Draw("LSAME")
-        #self.EXP['plus'].Draw("LSAME")
-        #self.EXP['minus'].Draw("LSAME")        
+        ##self.EXP['plus'].Draw("LSAME")
+        ##self.EXP['minus'].Draw("LSAME")        
 
     def DrawLegend(self):
         xRange = self.model.Xmax-self.model.Xmin
