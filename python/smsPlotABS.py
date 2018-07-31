@@ -3,6 +3,21 @@ from array import *
 from sms import *
 from color import *
 import CMS_lumi
+
+def doSpam(text,x1,y1,x2,y2,align=12,fill=False,textSize=0.033,_noDelete={}):
+    cmsprel = rt.TPaveText(x1,y1,x2,y2,"NDC");
+    cmsprel.SetTextSize(textSize);
+    cmsprel.SetFillColor(0);
+    cmsprel.SetFillStyle(1001 if fill else 0);
+    cmsprel.SetLineStyle(2);
+    cmsprel.SetLineColor(0);
+    cmsprel.SetTextAlign(align);
+    cmsprel.SetTextFont(42);
+    cmsprel.AddText(text);
+    cmsprel.Draw("same");
+    _noDelete[text] = cmsprel; ## so it doesn't get deleted by PyROOT
+    return cmsprel
+
 class smsPlotABS(object):
     # modelname is the sms name (see sms.py)
     # histo is the 2D xsec map
@@ -28,14 +43,14 @@ class smsPlotABS(object):
         self.emptyhisto = self.emptyHistogramFromModel()
 
     def emptyHistogramFromModel(self):
-        self.emptyHisto = rt.TH2D("emptyHisto"+self.LABEL, "", 1, self.model.Xmin, self.model.Xmax, 
+        self.emptyHisto = rt.TH2D("emptyHisto"+self.LABEL, "", 1, self.model.Xmin, self.model.Xmax,
                                   1, self.model.Ymin, self.model.Ymax)
-        
+
     # define the plot canvas
     def setStyle(self):
         # canvas style
         rt.gStyle.SetOptStat(0)
-        rt.gStyle.SetOptTitle(0)        
+        rt.gStyle.SetOptTitle(0)
 
         self.c.SetLogz()
         self.c.SetTickx(1)
@@ -63,7 +78,7 @@ class smsPlotABS(object):
         self.emptyHisto.GetYaxis().SetTitleOffset(1.3)
         self.emptyHisto.GetYaxis().SetTitle(self.model.LSP)
         #self.emptyHisto.GetYaxis().CenterTitle(True)
-                
+
     def DrawText(self):
         #redraw axes
         self.c.RedrawAxis()
@@ -88,13 +103,18 @@ class smsPlotABS(object):
         graphWhite.Draw("FSAME")
         graphWhite.Draw("LSAME")
         self.c.graphWhite = graphWhite
-        CMS_lumi.writeExtraText = 0
-        CMS_lumi.extraText = self.preliminary
-        CMS_lumi.lumi_13TeV = self.lumi+" fb^{-1}"
 
-        CMS_lumi.lumi_sqrtS = self.energy+" TeV"  
-        iPos=0
-        CMS_lumi.CMS_lumi(self.c,4, iPos)
+        # Stolen from mcPlots.py
+        textLeft = "#bf{CMS} #it{Delphes Phase-2 Simulation Preliminary}, PU 200, 3 ab^{-1}, 14 TeV"
+        doSpam(textLeft, .12, .934, .45, .984, align=12, textSize=.0278)
+
+        #CMS_lumi.writeExtraText = 0
+        #CMS_lumi.extraText = self.preliminary
+        #CMS_lumi.lumi_13TeV = self.lumi+" fb^{-1}"
+
+        #CMS_lumi.lumi_sqrtS = self.energy+" TeV"
+        #iPos=0
+        #CMS_lumi.CMS_lumi(self.c,4, iPos)
         ## CMS LABEL
         #textCMS = rt.TLatex(0.25,0.96,"  %s " %(self.preliminary))
         #textCMS.SetNDC()
@@ -139,7 +159,7 @@ class smsPlotABS(object):
     def Save(self,label):
         # save the output
         self.c.SaveAs("%s.pdf" %label)
-        
+
     def DrawLegend(self):
         if(self.model.label2 == ""):
             offset = 0
@@ -147,7 +167,7 @@ class smsPlotABS(object):
             offset = -100
         xRange = self.model.Xmax-self.model.Xmin
         yRange = self.model.Ymax-self.model.Ymin
-        
+
         LObs = rt.TGraph(2)
         LObs.SetName("LObs")
         LObs.SetTitle("LObs")
@@ -178,7 +198,7 @@ class smsPlotABS(object):
         LObsM.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.50*yRange/100*10+offset)
         LObsM.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.50*yRange/100*10+offset)
 
-        textObs = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-1.50*yRange/100*10+offset, 
+        textObs = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-1.50*yRange/100*10+offset,
                             "Observed #pm 1 #sigma_{theory}")
         textObs.SetTextFont(42)
         textObs.SetTextSize(0.040)
@@ -190,7 +210,7 @@ class smsPlotABS(object):
         LExpP.SetTitle("LExpP")
         LExpP.SetLineColor(color(self.EXP['colorLine']))
         LExpP.SetLineStyle(7)
-        LExpP.SetLineWidth(2)  
+        LExpP.SetLineWidth(2)
         LExpP.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.0*yRange/100*10+offset)
         LExpP.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.0*yRange/100*10+offset)
 
@@ -202,17 +222,17 @@ class smsPlotABS(object):
         LExp.SetLineWidth(4)
         LExp.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.15*yRange/100*10+offset)
         LExp.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.15*yRange/100*10+offset)
-        
+
         LExpM = rt.TGraph(2)
         LExpM.SetName("LExpM")
         LExpM.SetTitle("LExpM")
         LExpM.SetLineColor(color(self.EXP['colorLine']))
         LExpM.SetLineStyle(7)
-        LExpM.SetLineWidth(2)  
+        LExpM.SetLineWidth(2)
         LExpM.SetPoint(0,self.model.Xmin+3*xRange/100, self.model.Ymax-1.3*yRange/100*10+offset)
         LExpM.SetPoint(1,self.model.Xmin+10*xRange/100, self.model.Ymax-1.3*yRange/100*10+offset)
 
-        textExp = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-1.3*yRange/100*10+offset, 
+        textExp = rt.TLatex(self.model.Xmin+11*xRange/100, self.model.Ymax-1.3*yRange/100*10+offset,
                             #"Expected #pm 1 #sigma_{statistical}")
                             "Expected")
         textExp.SetTextFont(42)
@@ -226,7 +246,7 @@ class smsPlotABS(object):
         LExp.Draw("LSAME")
         #LExpM.Draw("LSAME")
         #LExpP.Draw("LSAME")
-        
+
         self.c.LObs = LObs
         self.c.LObsM = LObsM
         self.c.LObsP = LObsP
@@ -243,7 +263,7 @@ class smsPlotABS(object):
         diagonal.Draw("FSAME")
         diagonal.Draw("LSAME")
         self.c.diagonal = diagonal
-        
+
     def DrawLines(self):
         ## observed
         #self.OBS['nominal'].SetLineColor(color(self.OBS['colorLine']))
@@ -252,44 +272,44 @@ class smsPlotABS(object):
         ## observed + 1sigma
         #self.OBS['plus'].SetLineColor(color(self.OBS['colorLine']))
         #self.OBS['plus'].SetLineStyle(1)
-        #self.OBS['plus'].SetLineWidth(0)        
+        #self.OBS['plus'].SetLineWidth(0)
         ## observed - 1sigma
         #self.OBS['minus'].SetLineColor(color(self.OBS['colorLine']))
         #self.OBS['minus'].SetLineStyle(1)
-        #self.OBS['minus'].SetLineWidth(0)        
+        #self.OBS['minus'].SetLineWidth(0)
         ## expected + 1sigma
         #self.EXP['plus'].SetLineColor(color(self.EXP['colorLine']))
         #self.EXP['plus'].SetLineStyle(7)
-        #self.EXP['plus'].SetLineWidth(2)                
+        #self.EXP['plus'].SetLineWidth(2)
         ## expected
         self.EXP['nominal'].SetLineColor(color(self.EXP['colorLine']))
         self.EXP['nominal'].SetLineStyle(7)
-        self.EXP['nominal'].SetLineWidth(4)        
+        self.EXP['nominal'].SetLineWidth(4)
         ## expected - 1sigma
         #self.EXP['minus'].SetLineColor(color(self.EXP['colorLine']))
         #self.EXP['minus'].SetLineStyle(7)
-        #self.EXP['minus'].SetLineWidth(2)                        
+        #self.EXP['minus'].SetLineWidth(2)
         ## DRAW LINES
         self.EXP['nominal'].Draw("LSAME")
         #self.EXP['plus'].Draw("LSAME")
         #self.EXP['minus'].Draw("LSAME")
         #self.OBS['nominal'].Draw("LSAME")
         #self.OBS['plus'].Draw("LSAME")
-        #self.OBS['minus'].Draw("LSAME")        
-        
+        #self.OBS['minus'].Draw("LSAME")
+
     def DrawCorridor(self):
         ## Moriond Recommendation for T2tt.
-        ## Blank out the diagonal delimited by these four points: 
-        ## (262.5,112.5) (287.5,87.5) (200,0) (150,0) 
+        ## Blank out the diagonal delimited by these four points:
+        ## (262.5,112.5) (287.5,87.5) (200,0) (150,0)
 
         ## lower left corner
         x1 = self.model.Xmin ## = 150
-        y1 = self.model.Ymin ## = 0  
+        y1 = self.model.Ymin ## = 0
 
         ## lower right corner
         x2 = self.model.Xmin+50. ## = 200
-        y2 = self.model.Ymin     ## = 0  
-        
+        y2 = self.model.Ymin     ## = 0
+
         ## upper right corner
         x3 = self.model.Xmin+137.5 ## = 287.5
         y3 = self.model.Ymin+87.5  ## = 87.5

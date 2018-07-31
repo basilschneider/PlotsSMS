@@ -32,7 +32,7 @@ lumi_sqrtS = ""
 
 drawLogo      = False
 
-def CMS_lumi(pad,  iPeriod,  iPosX ):
+def CMS_lumi(pad,  iPeriod,  iPosX , aLittleExtra=0.04):
     outOfFrame    = False
     if(iPosX/10==0 ): outOfFrame = True
 
@@ -71,11 +71,11 @@ def CMS_lumi(pad,  iPeriod,  iPosX ):
         lumiText += " (7 TeV)"
     elif ( iPeriod==4 ):
         lumiText += lumi_13TeV
-        lumiText += " (14 TeV)"
+        lumiText += " (13 TeV)"
     elif ( iPeriod==7 ):
         if( outOfFrame ):lumiText += "#scale[0.85]{"
         lumiText += lumi_13TeV 
-        lumiText += " (14 TeV)"
+        lumiText += " (13 TeV)"
         lumiText += " + "
         lumiText += lumi_8TeV 
         lumiText += " (8 TeV)"
@@ -88,7 +88,7 @@ def CMS_lumi(pad,  iPeriod,  iPosX ):
     elif ( iPeriod==0 ):
         lumiText += lumi_sqrtS
             
-    #print lumiText
+#    print lumiText
 
     latex = rt.TLatex()
     latex.SetNDC()
@@ -148,7 +148,7 @@ def CMS_lumi(pad,  iPeriod,  iPosX ):
                 latex.DrawLatex(posX_, posY_- relExtraDY*cmsTextSize*t, extraText)
     elif( writeExtraText ):
         if( iPosX==0):
-            posX_ =   l +  relPosX*(1-l-r)
+            posX_ =   l +  relPosX*(1+l-r) + aLittleExtra
             posY_ =   1-t+lumiTextOffset*t
 
         latex.SetTextFont(extraTextFont)
@@ -157,3 +157,4 @@ def CMS_lumi(pad,  iPeriod,  iPosX ):
         latex.DrawLatex(posX_, posY_, extraText)      
 
     pad.Update()
+
