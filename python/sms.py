@@ -174,15 +174,18 @@ class sms():
         n1 = "#lower[-0.12]{#tilde{#chi}}#lower[0.2]{#scale[0.85]{^{0}}}#kern[-1.3]{#scale[0.85]{_{1}}}"
         n2 = "#lower[-0.12]{#tilde{#chi}}#lower[0.2]{#scale[0.85]{^{0}}}#kern[-1.3]{#scale[0.85]{_{2}}}"
         c1 = "#lower[-0.12]{#tilde{#chi}}#lower[0.2]{#scale[0.85]{^{#pm}}}#kern[-1.3]{#scale[0.85]{_{1}}}"
-        self.label= "pp #rightarrow "+n2+c1+", "+n2+" #rightarrow Z"+n1+", "+c1+" #rightarrow W"+n1
+        #self.label= "pp #rightarrow "+n2+c1+", "+n2+" #rightarrow Z"+n1+", "+c1+" #rightarrow W"+n1
+        self.label= "pp #rightarrow "+n2+c1+" + pp #rightarrow "+n2+n1+", "+n2+" #rightarrow Z"+n1+", "+c1+" #rightarrow W"+n1
         self.label2= "";
         # scan range to plot
         self.Xmin = 100.
         self.Xmax = 375.
         self.Ymin = 5.
-        self.Ymax = 50.
-        self.Zmin = 0.001
-        self.Zmax = 2.
+        self.Ymax = 47.7
+        #self.Zmin = .001
+        #self.Zmax = 2.
+        self.Zmin = .1
+        self.Zmax = 100.
         # produce sparticle
         self.sParticle = "m#kern[0.1]{_{"+n2+"}} = m#kern[0.1]{_{"+c1+"}} [GeV]"
         # LSP

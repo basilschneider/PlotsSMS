@@ -1,0 +1,4 @@
+./dPhiPlotLimit.py TChiWZ limit
+python python/makeSMSplots.py config/SUS12024/TChiWZ_SUS12024.cfg TChiWZ && mv TChiWZXSEC.pdf TChiWZXSEC_limit.pdf
+#./dPhiPlotLimit.py TChiWZ sig
+#python python/makeSMSplots.py config/SUS12024/TChiWZ_SUS12024.cfg TChiWZ && mv TChiWZXSEC.pdf TChiWZXSEC_sig.pdf
